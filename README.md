@@ -1,6 +1,7 @@
-# 重启能量站 (Resilience Path)
+# 重启能量站
+CareerSpring — Where your career blooms again. 🌱
 
-一个为职场长期 Gap 人群设计的求职治愈伴侣。结合 AI 技术与心理支持，助你重拾自信，科学求职。
+一个为Gap 人群设计的求职治愈伙伴。结合 AI 技术与心理支持，助你重拾自信，科学求职。
 
 ## ✨ 核心功能
 
