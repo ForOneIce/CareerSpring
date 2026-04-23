@@ -1,11 +1,36 @@
-<div align="center">
+# 重启能量站 (Resilience Path)
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+一个为职场长期 Gap 人群设计的求职治愈伴侣。结合 AI 技术与心理支持，助你重拾自信，科学求职。
 
-  <h1>Built with AI Studio</h2>
+## ✨ 核心功能
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+本项目通过“求职生命周期”理念，为求职者提供全方位的支持：
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+1.  **愈心面板 (Dashboard)**：提供每日治愈语录、情绪波动追踪以及精选的求职/心态资源。
+2.  **深度知己 (Self-Discovery)**：集成 RIASEC 霍兰德职业兴趣测试与盖洛普优势识别，帮助用户深度挖掘自我价值。
+3.  **广度知彼 (Market Insights)**：利用 AI 进行行业深度分析，掌握最新市场趋势与岗位价值。
+4.  **求职渠道 (Job Channels)**：封装 Google 高级搜索指令，为国内求职者提供精准的内推/官推/垂直领域搜索方案。
+5.  **简历工坊 (Resume Workshop)**：通过 STAR 法则 AI 引导，将琐碎经历转化为具有竞争力的专业简历，并支持 AI 模拟面试追问。
+6.  **探索记录 (Tracker)**：结构化管理投递进度，记录面试复盘，让求职过程可视化、可控化。
+7.  **听见可能 (Podcast)**：精选职场与心理类播客，在间隙时间补给心理能量。
 
-</div>
+## 🤖 AI 集成情况
+
+本项目深度集成 **Google Gemini AI (gemini-3-flash-preview)**，实现以下智能化场景：
+
+-   **动态文案生成**：根据用户输入的情绪状态，实时生成治愈系鼓励语。
+-   **结构化数据提取**：从杂乱的招聘文本/链接中自动提取公司、岗位、技术栈等关键信息。
+-   **简历深度优化**：基于目标 JD 与用户简历，进行 AI 适配度分析并给出具体的修改与补充建议。
+-   **STAR 法则重构**：AI 引导用户按照 Situation-Task-Action-Result 逻辑重构项目经历。
+-   **行业趋势嗅探**：利用 AI 知识库对垂直行业进行现状、风口及风险的综合分析。
+
+*注：用户可在应用右上角配置个人专属 Gemini API Key 以获得更稳定的使用体验。*
+
+## 📜 开源协议
+
+本项目采用 **Creative Commons BY-NC-SA 4.0** (知识共享 署名-非商业性使用-相同方式共享 4.0 国际) 协议开源。
+
+这意味着：
+- **署名**：您必须给出适当的署名，提供本许可协议的链接，同时说明是否对本作品作了修改。
+- **非商业性使用**：您不得将本作品用于商业目的。
+- **相同方式共享**：如果您再混合、转换、或者基于本作品进行创作，您必须基于与原先许可协议相同的许可协议分发您贡献的作品。
