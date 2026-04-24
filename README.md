@@ -1,6 +1,6 @@
-# 重启能量站 
-CareerSpring — Where your career blooms again. 🌱
-一个为职场长期 Gap 人群设计的求职治愈伙伴。结合 AI 技术与心理支持，助你重拾自信，科学求职。
+# 重启能量站 (Resilience Path)
+
+一个为职场长期 Gap 人群设计的求职治愈伴侣。结合 AI 技术与心理支持，助你重拾自信，科学求职。
 
 ## ✨ 核心功能
 
@@ -16,7 +16,7 @@ CareerSpring — Where your career blooms again. 🌱
 
 ## 🤖 AI 集成情况
 
-本项目深度集成 **Google Gemini AI (gemini-1.5-flash)**，实现以下智能化场景：
+本项目深度集成 **Google Gemini AI (gemini-3-flash-preview)**，实现以下智能化场景：
 
 -   **动态文案生成**：根据用户输入的情绪状态，实时生成治愈系鼓励语。
 -   **结构化数据提取**：从杂乱的招聘文本/链接中自动提取公司、岗位、技术栈等关键信息。
@@ -25,32 +25,6 @@ CareerSpring — Where your career blooms again. 🌱
 -   **行业趋势嗅探**：利用 AI 知识库对垂直行业进行现状、风口及风险的综合分析。
 
 *注：用户可在应用右上角配置个人专属 Gemini API Key 以获得更稳定的使用体验。*
-
-## 🛡️ 安全与部署 (Security & Deployment)
-
-本项目在 API 调用安全方面遵循了生产级标准，采用了 **Full-Stack Proxy (全栈代理)** 架构。这一做法确保了开发者 API Key 的安全性，并兼容 Vercel 等现代云平台的最佳实践。
-
-### 核心安全原则
-
-1.  **服务端环境变量保护 (Environment Variables)**：
-    -   系统默认的 `GEMINI_API_KEY` 仅存储在服务端（Vercel Settings 或本地环境）。
-    -   **前端代码库中永远不包含任何明文 Key。**
-2.  **后端代理转发 (Backend Proxy)**：
-    -   前端不直接请求 Google API，而是请求内部接口 `/api/chat`。
-    -   由后端 Node.js (`server.ts`) 在读取环境变量后发起请求，**有效防止 Key 在浏览器的 Network 面板泄露。**
-3.  **用户私有 Key 隔离**：
-    -   如果用户在 UI 中设置了“个人私有 Key”，该 Key 存储在用户的 LocalStorage 中。
-    -   请求时会将其发送至后端，后端优先使用用户 Key 进行调用，实现公有额度与私有额度的物理隔离。
-
-### 部署 Checklist (面向开发者)
-
-如果您希望在自己的云平台上部署此站点：
-
--   **配置环境变量**：在部署平台设置中添加 `GEMINI_API_KEY`。
--   **域名校验 (Referer Check)**：建议在生产环境增加 Referer 校验，确保请求确实来自您的网站域名。
--   **频率限制 (Rate Limiting)**：建议配合后端中间件实现 IP 级别的调用限制，防止额度被恶意消耗。
-
-通过这一架构，本项目保障了既能为普通用户提供开箱即用的 AI 体验，又能让极客用户在不泄露隐私的前提下使用个人资源。
 
 ## 📜 开源协议
 

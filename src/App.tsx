@@ -625,9 +625,10 @@ export default function App() {
   };
 
   const saveApiKey = (key: string) => {
-    setCustomApiKey(key);
-    if (key) {
-      localStorage.setItem('RESILIENCE_GEMINI_KEY', key);
+    const trimmedKey = key.trim();
+    setCustomApiKey(trimmedKey);
+    if (trimmedKey) {
+      localStorage.setItem('RESILIENCE_GEMINI_KEY', trimmedKey);
     } else {
       localStorage.removeItem('RESILIENCE_GEMINI_KEY');
     }
@@ -2401,10 +2402,8 @@ function Tracker({ jobs, setJobs }: {
         </div>
       </header>
 
-      {/* The Forest Path Visualization - Collapses with Stats */}
-      {showStats && (
-        <ForestPath totalJobs={stats.total} interviewing={stats.interviewing} offers={stats.offers} />
-      )}
+      {/* The Forest Path Visualization - Always Visible at Top */}
+      <ForestPath totalJobs={stats.total} interviewing={stats.interviewing} offers={stats.offers} />
 
       {showStats && (
         <section className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-in fade-in slide-in-from-top-4">
