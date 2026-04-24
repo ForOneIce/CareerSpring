@@ -19,17 +19,8 @@ async function startServer() {
     try {
       const { contents, systemInstruction, model, userCustomKey } = req.body;
 
-      // Priority logic: User Custom Key (Private Mode) > Server Env Key (Public/System Mode)
-      // Trim to prevent whitespace issues
       const rawKey = userCustomKey || process.env.GEMINI_API_KEY;
       const apiKey = rawKey?.toString().trim();
-
-      console.log("[Gemini Proxy] Key Source:", userCustomKey ? "User Custom" : "System Environment");
-      console.log("[Gemini Proxy] Key Present:", !!apiKey);
-      if (apiKey) {
-        console.log("[Gemini Proxy] Key Length:", apiKey.length);
-        console.log("[Gemini Proxy] Key Prefix:", apiKey.substring(0, 4));
-      }
 
       if (!apiKey) {
         return res.status(400).json({ 
@@ -37,8 +28,8 @@ async function startServer() {
         });
       }
 
-      const ai = new GoogleGenAI({ apiKey });
-      const response = await ai.models.generateContent({
+      const genAI = new GoogleGenAI({ apiKey });
+      const response = await genAI.models.generateContent({
         model: model || "gemini-3-flash-preview",
         contents: contents,
         config: {
@@ -46,11 +37,13 @@ async function startServer() {
         },
       });
 
-      if (!response || !response.text) {
+      const text = response.text;
+
+      if (!text) {
         throw new Error("AI 返回了空内容。");
       }
 
-      res.json({ text: response.text });
+      res.json({ text });
     } catch (error: any) {
       console.error("[Gemini Proxy] Error:", error);
       
