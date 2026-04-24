@@ -1,0 +1,93 @@
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+import { createServer as createViteServer } from "vite";
+import { GoogleGenAI } from "@google/genai";
+import "dotenv/config";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+async function startServer() {
+  const app = express();
+  const PORT = 3000;
+
+  app.use(express.json());
+
+  // API Route for Gemini
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { contents, systemInstruction, model, userCustomKey } = req.body;
+
+      // Priority logic: User Custom Key (Private Mode) > Server Env Key (Public/System Mode)
+      // Trim to prevent whitespace issues
+      const rawKey = userCustomKey || process.env.GEMINI_API_KEY;
+      const apiKey = rawKey?.toString().trim();
+
+      console.log("[Gemini Proxy] Key Source:", userCustomKey ? "User Custom" : "System Environment");
+      console.log("[Gemini Proxy] Key Present:", !!apiKey);
+      if (apiKey) {
+        console.log("[Gemini Proxy] Key Length:", apiKey.length);
+        console.log("[Gemini Proxy] Key Prefix:", apiKey.substring(0, 4));
+      }
+
+      if (!apiKey) {
+        return res.status(400).json({ 
+          error: "缺少有效 API Key。请在左上角设置中配置个人 Key，或联系管理员配置默认 Key。" 
+        });
+      }
+
+      const ai = new GoogleGenAI({ apiKey });
+      const response = await ai.models.generateContent({
+        model: model || "gemini-3-flash-preview",
+        contents: contents,
+        config: {
+          systemInstruction: systemInstruction,
+        },
+      });
+
+      if (!response || !response.text) {
+        throw new Error("AI 返回了空内容。");
+      }
+
+      res.json({ text: response.text });
+    } catch (error: any) {
+      console.error("[Gemini Proxy] Error:", error);
+      
+      // Better error messages for the user
+      let errorMessage = "AI 调用失败，请稍后再试。";
+      if (error.message?.includes("API key not valid")) {
+        errorMessage = "API Key 无效。请检查您的个人 Key 配置，或稍后重试公共模式。";
+      } else if (error.message?.includes("quota")) {
+        errorMessage = "当前 Key 额度已耗尽 (Quota Exceeded)，请稍后再试或换用个人 Key。";
+      }
+
+      res.status(500).json({ 
+        error: errorMessage,
+        details: error.message 
+      });
+    }
+  });
+
+  // Vite middleware for development
+  if (process.env.NODE_ENV !== "production") {
+    const vite = await createViteServer({
+      server: { middlewareMode: true },
+      appType: "spa",
+    });
+    app.use(vite.middlewares);
+  } else {
+    // Static file serving for production
+    const distPath = path.join(process.cwd(), "dist");
+    app.use(express.static(distPath));
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(distPath, "index.html"));
+    });
+  }
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+}
+
+startServer();
