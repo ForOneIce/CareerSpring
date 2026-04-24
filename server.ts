@@ -28,10 +28,19 @@ async function startServer() {
         });
       }
 
+      // Model name correction
+      const validModel = (model === "gemini-3-flash-preview" || !model) ? "gemini-1.5-flash" : model;
+
       const genAI = new GoogleGenAI({ apiKey });
+      
+      // Normalize contents
+      const normalizedContents = typeof contents === 'string' 
+        ? [{ role: 'user', parts: [{ text: contents }] }]
+        : contents;
+
       const response = await genAI.models.generateContent({
-        model: model || "gemini-3-flash-preview",
-        contents: contents,
+        model: validModel,
+        contents: normalizedContents,
         config: {
           systemInstruction: systemInstruction,
         },
@@ -47,7 +56,6 @@ async function startServer() {
     } catch (error: any) {
       console.error("[Gemini Proxy] Error:", error);
       
-      // Better error messages for the user
       let errorMessage = "AI 调用失败，请稍后再试。";
       if (error.message?.includes("API key not valid")) {
         errorMessage = "API Key 无效。请检查您的个人 Key 配置，或稍后重试公共模式。";

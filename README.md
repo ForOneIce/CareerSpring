@@ -16,7 +16,7 @@ CareerSpring — Where your career blooms again. 🌱
 
 ## 🤖 AI 集成情况
 
-本项目深度集成 **Google Gemini AI (gemini-3-flash-preview)**，实现以下智能化场景：
+本项目深度集成 **Google Gemini AI (gemini-1.5-flash)**，实现以下智能化场景：
 
 -   **动态文案生成**：根据用户输入的情绪状态，实时生成治愈系鼓励语。
 -   **结构化数据提取**：从杂乱的招聘文本/链接中自动提取公司、岗位、技术栈等关键信息。

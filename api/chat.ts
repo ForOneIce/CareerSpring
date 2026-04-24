@@ -19,10 +19,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         });
       }
 
+      // Model name correction (gemini-3-flash is a hallway/hallucinated name)
+      const validModel = (model === "gemini-3-flash-preview" || !model) ? "gemini-1.5-flash" : model;
+
       const genAI = new GoogleGenAI({ apiKey });
+      
+      // Normalize contents for GenAI SDK v1.x (Unified SDK)
+      // Expects objects like: [{ role: 'user', parts: [{ text: '...' }] }]
+      const normalizedContents = typeof contents === 'string' 
+        ? [{ role: 'user', parts: [{ text: contents }] }]
+        : contents;
+
       const response = await genAI.models.generateContent({
-        model: model || "gemini-3-flash-preview",
-        contents: contents,
+        model: validModel,
+        contents: normalizedContents,
         config: {
           systemInstruction: systemInstruction,
         },
@@ -30,24 +40,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       const text = response.text;
 
-    if (!text) {
-      throw new Error("AI 返回了空内容。");
-    }
+      if (!text) {
+        throw new Error("AI 返回了空内容。可能是模型选择或输入格式有误。");
+      }
 
-    return res.status(200).json({ text });
-  } catch (error: any) {
-    console.error("[Vercel API] Error:", error);
-    
-    let errorMessage = "AI 调用失败，请稍后再试。";
-    if (error.message?.includes("API key not valid")) {
-      errorMessage = "API Key 无效。请检查您的个人 Key 配置，或检查部署的环境变量。";
-    } else if (error.message?.includes("quota")) {
-      errorMessage = "当前 Key 额度已耗尽 (Quota Exceeded)，请稍后再试或换用个人 Key。";
+      return res.status(200).json({ text });
+    } catch (error: any) {
+      console.error("[Vercel API] Error:", error);
+      
+      // Return details only in non-production or for debugging if needed, 
+      // but here we help the user see why it failed.
+      return res.status(500).json({ 
+        error: error.message?.includes("not valid") ? "API Key 无效" : "AI 调用失败",
+        details: error.message,
+        stack: process.env.NODE_ENV !== 'production' ? error.stack : undefined
+      });
     }
-
-    return res.status(500).json({ 
-      error: errorMessage,
-      details: error.message 
-    });
-  }
 }

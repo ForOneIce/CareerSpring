@@ -2401,8 +2401,10 @@ function Tracker({ jobs, setJobs }: {
         </div>
       </header>
 
-      {/* The Forest Path Visualization - Always Visible at Top */}
-      <ForestPath totalJobs={stats.total} interviewing={stats.interviewing} offers={stats.offers} />
+      {/* The Forest Path Visualization - Collapses with Stats */}
+      {showStats && (
+        <ForestPath totalJobs={stats.total} interviewing={stats.interviewing} offers={stats.offers} />
+      )}
 
       {showStats && (
         <section className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-in fade-in slide-in-from-top-4">

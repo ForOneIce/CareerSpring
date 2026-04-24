@@ -32,7 +32,7 @@ export const generateEncouragement = async (mood?: string) => {
     : `请写一段关于“慢慢来”或“花期各异”的极简治愈话语。要求：一两句短语，总长50字以内，不要说教，只要静谧的美感。`;
     
   return callGeminiApi({
-    model: "gemini-3-flash-preview",
+    model: "gemini-1.5-flash",
     contents: prompt,
     systemInstruction: "你是一个极简主义治愈系AI助手。你擅长用最简短、最动人的文学语言安抚人心。不要废话，不要列举建议，每句话都要像写在明信片上的诗。",
   });
@@ -48,7 +48,7 @@ export const generateSTARResponse = async (context: string, action: string, resu
   `;
 
   return callGeminiApi({
-    model: "gemini-3-flash-preview",
+    model: "gemini-1.5-flash",
     contents: prompt,
     systemInstruction: "你是一个专业的面试教练。你擅长把平凡的经历包装成具有闪光点的面试素材。在包装的同时，你总是能发现用户身上被他们自己忽略的韧性与才华。",
   });
@@ -69,7 +69,7 @@ export const generateIkigaiSynthesis = async (love: string, goodAt: string, need
   `;
 
   return callGeminiApi({
-    model: "gemini-3-flash-preview",
+    model: "gemini-1.5-flash",
     contents: prompt,
     systemInstruction: "你是一个职业生涯规划专家，擅长使用 Ikigai 模型引导用户发现生命意义。你的分析深刻且具有同理心，能从看似不相关的碎片中通过直觉与逻辑找到完美的职业契合点。",
   });
@@ -90,7 +90,7 @@ export const analyzeIndustry = async (keyword: string) => {
   `;
 
   return callGeminiApi({
-    model: "gemini-3-flash-preview",
+    model: "gemini-1.5-flash",
     contents: prompt,
     systemInstruction: "你是一个资深的行业分析师和求职教练。你擅长透过现象看本质，为求职者提供极具洞察力的行业分析，同时不失人文关怀。",
   });
@@ -113,7 +113,7 @@ export const parseJobPosting = async (text: string) => {
   `;
 
   const textResponse = await callGeminiApi({
-    model: "gemini-3-flash-preview",
+    model: "gemini-1.5-flash",
     contents: prompt,
     systemInstruction: "你是一个专业的招聘数据提取器。你擅长从杂乱的海报、招聘文章或JD链接片段中提取结构化的职位信息。你只返回纯 JSON 内容，不包含任何 Markdown 格式。输出格式：{\"companyName\": \"...\", ...}",
   });
@@ -148,7 +148,7 @@ export const generateResumeOptimization = async (jd: string, resume: string) => 
   `;
 
   const textResponse = await callGeminiApi({
-    model: "gemini-3-flash-preview",
+    model: "gemini-1.5-flash",
     contents: prompt,
     systemInstruction: "你是一个资深的职业生涯教练。你不仅擅长改简历，更擅长帮助求职者理解企业背后的诉求。你的建议总是能帮求职者在简历之外准备好全套‘求职武器库’。请仅返回 JSON，不要 Markdown 围栏。",
   });
